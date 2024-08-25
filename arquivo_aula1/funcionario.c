@@ -15,8 +15,8 @@ void imprime(Funcionario *func) {
     printf("\nData de Nascimento: ");
     printf("%s", func->data_nascimento);
     printf("\nSalário: ");
-    printf("%4.2f", func->salario);
-    printf("-----------------------------------");
+    printf("%4.2f\n", func->salario);
+    printf("-----------------------------------\n");
 }
 
 // Cria funcionario. Lembrar de usar free(func)

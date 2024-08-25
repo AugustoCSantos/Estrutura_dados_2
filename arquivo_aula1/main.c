@@ -37,7 +37,6 @@ void le_segundo_funcionario(FILE *in) {
     //tamanho() indica quantos bytes vamos pular, o que aqui é igual ao tamanho de um registro 
     //(vamos pular o primeiro e nos posicionar no início do segundo)
     //** ATENÇÃO: não usar sizeof(Funcionario), pois ele pode retornar valor maior que o tamanho ocupado em disco, 
-    //            devido a alinhamento automático (ver https://en.wikipedia.org/wiki/Data_structure_alignment))
     //SEEK_SET indica o início do arquivo
     //ao final, o cursor estará posicionado em 0 + tamanho() +1
     fseek(in, tamanho(), SEEK_SET);
@@ -84,7 +83,7 @@ void sobrescreve_quarto_funcionario(FILE *in) {
     }
 }
 
-void main(int argc, char** argv) {
+int main(int argc, char** argv) {
     //declara ponteiro para arquivo
     FILE *out;
     //abre arquivo
