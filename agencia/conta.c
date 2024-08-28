@@ -43,10 +43,17 @@ Conta *leConta(FILE *in){
     fread(&conta->codAgencia, sizeof(int), 1, in);
     fread(&conta->saldo, sizeof(double), 1, in);
     
+    return conta;
 }
 
 void leTodasContas (FILE *in){
+    Conta *c;
 
+    while((c = leConta(in)) != NULL) {
+        printf("\n");
+        imprimeConta(c);
+        free(c);
+    }
 }
 
 int tamanho(){
