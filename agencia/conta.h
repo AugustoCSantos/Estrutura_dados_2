@@ -23,9 +23,6 @@ void salvaConta(Conta *conta, FILE *out);
 // Le uma conta.
 Conta *leConta(FILE *in);
 
-void leTodasContas(FILE *in);
-
-// Retorna tamanho da conta em bytes.
-int tamanho();
+Conta* consultarConta(int num_conta, FILE* arq);
 
 #endif

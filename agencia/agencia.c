@@ -46,18 +46,16 @@ Agencia *le(FILE *in){
     return ag;   
 }
 
-void leTodasAg(FILE *in){
-    Agencia *a;
+Agencia* consultarAgencia(int numAg, FILE* arq) {
+	Agencia* agencia;
 
-    while((a = le(in)) != NULL) {
-        printf("\n");
-        imprime(a);
-        free(a);
-    }
+	rewind(arq);
+
+	while((agencia = ler_agencia(arq)) != NULL) {
+		if (agencia->codAgencia == numAg) {
+			return agencia;
+		}
+	}
+	return NULL;
 }
 
-int tamanho(){
-    return sizeof(int) //codigo conta
-            + sizeof(int) //codigo agencia
-            + sizeof(double); //saldo
-}

@@ -23,9 +23,6 @@ void salva(Agencia *ag, FILE *out);
 // Le uma agencia.
 Agencia *le(FILE *in);
 
-void leTodasAg(FILE *in);
-
-// Retorna tamanho da agencia em bytes.
-int tamanho();
+Agencia* consultarAgencia(int numAg, FILE* arq);
 
 #endif

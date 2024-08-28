@@ -46,18 +46,15 @@ Conta *leConta(FILE *in){
     return conta;
 }
 
-void leTodasContas (FILE *in){
-    Conta *c;
+Conta* consultarConta(int num_conta, FILE* arq) {
+	Conta* acc;
 
-    while((c = leConta(in)) != NULL) {
-        printf("\n");
-        imprimeConta(c);
-        free(c);
-    }
-}
-
-int tamanho(){
-    return sizeof(int) //codigo conta
-            + sizeof(int) //codigo agencia
-            + sizeof(double); //saldo
+	rewind(arq);
+    
+	while((acc = ler_conta(arq)) != NULL) {
+		if(acc->codConta == num_conta) {
+			return acc;
+		}
+	}
+	return NULL;
 }
