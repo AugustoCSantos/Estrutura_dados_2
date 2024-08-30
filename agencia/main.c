@@ -53,7 +53,7 @@ int main() {
                 printf("Listagem de contas:\n");
                 rewind(in);
 
-                le(in);
+                leConta(in);
                 break;
 
             case 7:
