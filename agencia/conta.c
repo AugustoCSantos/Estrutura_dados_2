@@ -19,9 +19,9 @@ Conta *conta(int codConta, int codAgencia, double saldo){
 
     if(conta) memset(conta, 0, sizeof(Conta));
 
-    conta->codConta;
-    conta->codAgencia;
-    conta->saldo;
+    conta->codConta = codConta;
+    conta->codAgencia = codAgencia;
+    conta->saldo = saldo;
 
     return conta;
 }
@@ -46,15 +46,9 @@ Conta *leConta(FILE *in){
     return conta;
 }
 
-Conta* consultarConta(int num_conta, FILE* arq) {
-	Conta* acc;
 
-	rewind(arq);
-    
-	while((acc = ler_conta(arq)) != NULL) {
-		if(acc->codConta == num_conta) {
-			return acc;
-		}
-	}
-	return NULL;
+int tamanho() {
+    return sizeof(int) + // cod
+            sizeof(int) + // agencia
+            sizeof(double); // saldo
 }

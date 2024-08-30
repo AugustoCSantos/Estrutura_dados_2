@@ -23,6 +23,6 @@ void salva(Agencia *ag, FILE *out);
 // Le uma agencia.
 Agencia *le(FILE *in);
 
-Agencia* consultarAgencia(int numAg, FILE* arq);
+int tamanho();
 
 #endif

@@ -23,6 +23,6 @@ void salvaConta(Conta *conta, FILE *out);
 // Le uma conta.
 Conta *leConta(FILE *in);
 
-Conta* consultarConta(int num_conta, FILE* arq);
+int tamanho();
 
 #endif

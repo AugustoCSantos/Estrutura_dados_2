@@ -45,17 +45,3 @@ Agencia *le(FILE *in){
 
     return ag;   
 }
-
-Agencia* consultarAgencia(int numAg, FILE* arq) {
-	Agencia* agencia;
-
-	rewind(arq);
-
-	while((agencia = ler_agencia(arq)) != NULL) {
-		if (agencia->codAgencia == numAg) {
-			return agencia;
-		}
-	}
-	return NULL;
-}
-
