@@ -16,7 +16,7 @@ Conta* conta(int codigo, int codAgencia, double saldo);
 
 void salva(Conta *cont, FILE *out);
 
-Agencia *le(FILE *in)
+Conta *le(FILE *in);
 
 int tamanho();
 

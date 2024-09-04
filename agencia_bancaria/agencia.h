@@ -16,7 +16,7 @@ Agencia* agencia(int codigo, char* nome, char* gerente);
 
 void salva(Agencia *ag, FILE *out);
 
-Agencia *le(FILE *in)
+Agencia *le(FILE *in);
 
 int tamanho();
 
