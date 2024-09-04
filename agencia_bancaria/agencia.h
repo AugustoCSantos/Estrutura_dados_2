@@ -1,8 +1,8 @@
 #ifndef AGENCIA_H
 #define AGENCIA_H
 
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct Agencia{
     int codigo;
@@ -10,19 +10,14 @@ typedef struct Agencia{
     char gerente[50];
 }Agencia;
 
-//Criacao: Essa função aloca memoria para uma nova estrutura Agencia e inicializa seus membros com os valores passados como parametros.
-Agencia* nova_agencia(int codigo, char* nome, char* gerente);
+void imprime(Agencia *ag);
 
-//Escreve os dados da agencia em um arquivo binario. Isso permite que a informacao seja salva e carregada posteriormente.
-void salva_agencia(Agencia* agencia, FILE* archive);
+Agencia* agencia(int codigo, char* nome, char* gerente);
 
-//Le os dados de uma agencia a partir de um arquivo binario e cria uma nova estrutura Agencia com essas informacoes.
-Agencia* ler_agencia(FILE* archive);
+void salva(Agencia *ag, FILE *out);
 
-//Exibe na tela os dados da agencia de forma formatada.
-void imprime_agencia(Agencia* agencia);
+Agencia *le(FILE *in)
 
-//Procura uma agencia especifica no arquivo, identificada pelo seu codigo.
-Agencia* consulta_agencia(int num_agencia, FILE* archive);
+int tamanho();
 
 #endif

@@ -1,8 +1,8 @@
 #ifndef CONTA_H
 #define CONTA_H
 
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct Conta {
 	int codigo;
@@ -10,10 +10,14 @@ typedef struct Conta {
 	double saldo;
 } Conta;
 
-Conta* novaConta(int codigo, int codAgencia, double saldo);
-void salvarConta(Conta* conta, FILE* archive);
-Conta* lerConta(FILE* archive);
-void imprimeConta(Conta* conta);
-Conta* consultarConta(int numConta, FILE* archive);
+void imprime(Conta *cont);
+
+Conta* conta(int codigo, int codAgencia, double saldo);
+
+void salva(Conta *cont, FILE *out);
+
+Agencia *le(FILE *in)
+
+int tamanho();
 
 #endif
