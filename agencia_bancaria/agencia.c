@@ -11,7 +11,7 @@ void imprime(Agencia *ag){
     printf("%s", ag->nome);
     printf("\nNome do Gerente: ");
     printf("%s", ag->gerente);
-    printf("-----------------------------------\n");
+    printf("\n-----------------------------------\n");
 }
 
 Agencia* agencia(int codigo, char* nome, char* gerente){
@@ -45,8 +45,8 @@ Agencia *le(FILE *in){
     return ag;
 }
 
-int tamanho(){
+/*int tamanho(){
     return sizeof(int)
             + sizeof(char) * 50
             + sizeof(char) * 50;
-}
+}*/

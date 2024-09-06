@@ -10,13 +10,13 @@ typedef struct Conta {
 	double saldo;
 } Conta;
 
-void imprime(Conta *cont);
+void imprimeC(Conta *cont);
 
 Conta* conta(int codigo, int codAgencia, double saldo);
 
-void salva(Conta *cont, FILE *out);
+void salvaC(Conta *cont, FILE *out);
 
-Conta *le(FILE *in);
+Conta *leC(FILE *in);
 
 int tamanho();
 
