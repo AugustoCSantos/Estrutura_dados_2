@@ -1,116 +1,126 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define MEM_SIZE 6 //para os registros
 
-void escreve(FILE *out);
-void le(FILE *in);
-void selecao(FILE *in, FILE *out);
-void insereHeap(int heap[], int *n, int valor);
-int remover(int heap[], int *n); 
+typedef struct Freezer{
+    int valor;
+    bool congelado;
+}Freezer;
+
+void gera_arquivo(FILE *out);
+void le_arquivo(FILE *in); //debug
+Freezer** inicia_memoria(int *ini);
+void descongela(Freezer **F);
+int menor_valor_ncongelado(Freezer** F);
+void selecao(FILE *in);
 
 int main(){
-    FILE *sequenciaReg = fopen("registros.dat", "w+b"); //arquivo desordenado.
+    FILE *sequenciaReg = fopen("registros.dat", "w+b");
 
     if(sequenciaReg == NULL){
-        printf("Error ao abrir o arquivo.\n");
+        printf("Erro ao gerar arquivo\n");
+        exit(1);
     }
 
-    escreve(sequenciaReg);
+    gera_arquivo(sequenciaReg);
     rewind(sequenciaReg);
-    //le(sequenciaReg); //usei pra debugar se havia escrito no arquivo.
-
-    FILE *saida = fopen("saidaOrdenada.dat", "w+b"); //saida com o arquivo ordenado.
-
-    if (saida == NULL){
-        printf("Error ao abrir o arquivo.\n");
-        fclose(sequenciaReg);
-        return 1;
-    }
-
-    selecao(sequenciaReg, saida);
-    rewind(saida);
-    le(saida);  //Ler os registros após a seleção por substituição
-
+    
+    selecao(sequenciaReg);
     fclose(sequenciaReg);
-    fclose(saida);
 
     return 0;
 }
 
-void escreve(FILE *out){
+void gera_arquivo(FILE *out){
     int reg[23] = {30, 14, 15, 75, 32, 6, 5, 81, 48, 41, 87, 18, 
                     56, 20, 26, 4, 21, 65, 22, 49, 11, 16, 8};
-
+    
     for(int i = 0; i < 23; i++){
         fwrite(&reg[i], sizeof(int), 1, out);
     }
 }
 
-void le(FILE *in){
-    int auxReg;
+void le_arquivo(FILE *in){
+    int aux;
 
-    rewind(in);
-
-    while(fread(&auxReg, sizeof(int), 1, in)){
-        printf("%d\n", auxReg);
+    while(fread(&aux, sizeof(int), 1, in)){
+        printf("%d ", aux);
     }
 }
 
-void insereHeap(int heap[], int *n, int valor) {
-    int i = (*n)++; //Aumenta o tamanho do heap e define a posição do novo valor.
+Freezer** inicia_memoria(int *ini){
+    //Aloca espaço para a memória
+    //inicializa cada posição da memória com os valores passados no array a 
+    //e define o estado congelado como false.
+    Freezer **F = (Freezer**)malloc(sizeof(Freezer*) * MEM_SIZE);
 
-    while (i > 0 && valor < heap[(i - 1) / 2]) {
-        heap[i] = heap[(i - 1) / 2];
-        i = (i - 1) / 2;
+    for(int i = 0; i < MEM_SIZE; i++){
+        F[i] = (Freezer*)malloc(sizeof(Freezer));
+        F[i]->valor = ini[i];
+        F[i]->congelado = false;
     }
-    heap[i] = valor;
+
+    return F;
 }
 
-int remover(int heap[], int *n) {
-    int menor = heap[0];  //O menor valor é sempre o valor do topo (raiz).
-    int temp = heap[--(*n)];  //O último valor do heap é movido para o topo.
-    int i = 0, filho;
-
-    //Reorganiza o heap "descendo" o valor temporário (temp) até a posição correta.
-    while ((filho = 2 * i + 1) < *n) {  //Enquanto o filho esquerdo existir.
-        if (filho + 1 < *n && heap[filho + 1] < heap[filho]) {  //Se o filho direito for menor que o esquerdo.
-            filho++;
-        }
-        if (temp <= heap[filho]) break;  //Se o valor temporário já estiver no lugar certo.
-        heap[i] = heap[filho];  //Caso contrário, move o filho para cima
-        i = filho;  //continua descendo para o próximo nível.
+void descongela(Freezer **F){
+    for(int i = 0; i < MEM_SIZE; i++){
+        F[i]->congelado = false;
     }
-    heap[i] = temp;  //Coloca o valor temporário na posição correta.
-
-    return menor;  //Retorna o menor valor removido.
 }
 
-void selecao(FILE *in, FILE *out){
-    int heap[MEM_SIZE];
-    int tam_heap = 0;
-    int auxReg;
-    int marcador = -1;
+int menor_valor_ncongelado(Freezer** F){
+    int pos = -1;
+    int menor = 10000;
 
-    for (int i = 0; i < MEM_SIZE; i++){
-        if(fread(&auxReg, sizeof(int), 1, in)){
-            insereHeap(heap, &tam_heap, auxReg);
-        }
-    } //preenche a heap com os registros
-
-    while (tam_heap > 0){
-        int menor = remover(heap, &tam_heap);
-        fwrite(&menor, sizeof(int), 1, out);
-
-        if (fread(&auxReg, sizeof(int), 1, in)) {
-            if (auxReg >= menor) {
-                insereHeap(heap, &tam_heap, auxReg);
-            } else { 
-                fwrite(&marcador, sizeof(int), 1, out);
-                insereHeap(heap, &tam_heap, auxReg);
-            } //Marcador de nova rodada.
+    for(int i = 0; i < MEM_SIZE; i++){
+        if(!(F[i]->congelado) && (F[i]->valor < menor)){
+            menor = F[i]->valor;
+            pos = i;
         }
     }
 
-    fwrite(&marcador, sizeof(int), 1, out); //Marcar o fim da última rodada.
+    return pos;
+}
+
+void selecao(FILE *in){
+    Freezer **F;
+    int aux[MEM_SIZE];
+    int part = 0;
+
+    fread(aux, sizeof(int), MEM_SIZE, in);
+    F = inicia_memoria(aux);
+
+    int posicao, novo;
+    bool terminou = false;
+
+    while (1) {
+
+        posicao = menor_valor_ncongelado(F);
+        if (posicao == -1) {
+            printf("\nNova Particao\n");
+            descongela(F);
+            continue;
+        } else {
+            if (fread(&novo, sizeof(int), 1, in) <= 0) {
+                break;
+            }
+            
+            printf("%d ", F[posicao]->valor);
+            if (novo < F[posicao]->valor) {
+                F[posicao]->valor = novo;
+                F[posicao]->congelado = true;
+            } else {
+                F[posicao]->valor = novo;
+            }
+        }
+    }
+
+    // Imprimir o último valor
+    while ((posicao = menor_valor_ncongelado(F)) != -1) {
+        printf("%d ", F[posicao]->valor);
+        F[posicao]->congelado = true;
+    }
 }
