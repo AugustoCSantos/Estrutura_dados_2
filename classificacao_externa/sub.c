@@ -75,6 +75,9 @@ int menor_valor_ncongelado(Freezer** F){
     int pos = -1;
     int menor = 10000;
 
+    //Percorre a memória e encontra o menor valor que não está "congelado".
+    //Retorna a posição desse valor. Se todos os valores estiverem congelados, retorna -1.
+
     for(int i = 0; i < MEM_SIZE; i++){
         if(!(F[i]->congelado) && (F[i]->valor < menor)){
             menor = F[i]->valor;
